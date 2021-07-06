@@ -76,8 +76,7 @@ class ViewController: UITableViewController {
         // Приводим буквы в ответе к нижнему регистру чтоы в дальнейшем было удобно делать сравнение введенных слов
         let lowerAnswer = answer.lowercased()
         // Константы для показа ошибок в случае если игрок  написал слово которого не существует или использовал буквы которых нет в слове или написал повторо слова
-        let errorTitle: String
-        let errorMessage: String
+//
         
         
         // Проверка введенного слова при помощи трёх функций
@@ -94,22 +93,15 @@ class ViewController: UITableViewController {
                     return
                     // Иначе показываем пользователю три вида ошибок
                 } else {
-                    errorTitle = "Word not recognized"
-                    errorMessage = "You can't just make them up, you know!"
+                    showErrorMassege(errorMasseges: .isNotPossible)
                 }
             } else {
-                errorTitle = "Word used already"
-                errorMessage = "Try to be more original"
+                showErrorMassege(errorMasseges: .isNotOriginal)
             }
         } else {
-            guard let title = title?.lowercased() else { return }
-            errorTitle =  "Word not possible"
-            errorMessage = "You can't spell that word from \(title)"
+            showErrorMassege(errorMasseges: .isNotReal)
         }
-        // Создаем alert controller с сообщением об ошибке
-        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Ok", style: .default))
-        present(ac, animated: true)
+
     }
     
     // Функция проверяет можно ли составить слово из букв слова представленного в заголовке
@@ -139,9 +131,66 @@ class ViewController: UITableViewController {
     func isReal(word: String) -> Bool {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
+        
+        // Если слово короче 3 букв, то вернет false
+        if word.utf16.count <= 2 {
+            showErrorMassege(errorMasseges: .isNotRealTooShort)
+            return false
+        }
+        // Если слово такое же как и слово в заголовке
+        guard let checkWord = title?.lowercased() else { return false }
+        if word == checkWord {
+            showErrorMassege(errorMasseges: .isNotRealSameWord)
+            return false
+        }
+        
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         return misspelledRange.location == NSNotFound
     }
+    
+  
+    
+    enum ErrorMasseges {
+        case isNotPossible
+        case isNotOriginal
+        case isNotReal
+        case isNotRealTooShort
+        case isNotRealSameWord
+        
+    }
+    
+    func showErrorMassege(errorMasseges: ErrorMasseges) {
+        let errorTitle: String
+        let errorMessage: String
+        
+        switch errorMasseges {
+        case .isNotPossible:
+            errorTitle = "Word not recognized"
+            errorMessage = "You can't just make them up, you know!"
+            
+        case .isNotOriginal:
+        errorTitle = "Word used already"
+        errorMessage = "Try to be more original"
+            
+        case .isNotReal:
+            guard let title = title?.lowercased() else { return }
+            errorTitle =  "Word not possible"
+            errorMessage = "You can't spell that word from \(title)"
+            
+        case .isNotRealTooShort:
+            errorTitle = "Word is too short"
+            errorMessage = "You have to use words contains more than two letters"
+            
+        case .isNotRealSameWord:
+            errorTitle = "Word is the same as original"
+            errorMessage = "You need to use different words from original"
+        }
+        
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Ok", style: .default))
+        present(ac, animated: true)
+    }
+    
     
     
 }
