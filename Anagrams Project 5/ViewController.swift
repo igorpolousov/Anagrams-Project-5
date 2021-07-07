@@ -86,7 +86,7 @@ class ViewController: UITableViewController {
             if isOriginal(word: lowerAnswer){
                 if isReal(word: lowerAnswer){
                     // Если слово прошло три проверки оно добавляется в массив usedWords
-                    usedWords.insert(answer, at: 0)
+                    usedWords.insert(lowerAnswer, at: 0)
                     // после того как слово добавлено в массив usedWords указываем в какое место в таблице его добавить
                     let indexPath = IndexPath(row: 0, section: 0)
                     // Добавляем строку в таблицу
