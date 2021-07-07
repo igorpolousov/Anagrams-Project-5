@@ -17,6 +17,8 @@ class ViewController: UITableViewController {
         
         // Кнопка справа в navigation bar с функцией promptForAnswer строка 48
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+        // Кнопка слева в navigation bar с функцией startGame строка
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "New game", style: .plain, target: self, action: #selector(startGame))
         // Замыкание через которое получаем слова из файла
         // Указали путь и название файла с расширением
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
@@ -34,7 +36,7 @@ class ViewController: UITableViewController {
         startGame()
     }
     
-    func startGame() {
+   @objc func startGame() {
         title = allWords.randomElement() // Добавляет случайное слово из allWords в title navigation bar
         usedWords.removeAll(keepingCapacity: true) // Удаление всех слов из usedWords перед началом игры
         tableView.reloadData()
@@ -85,7 +87,7 @@ class ViewController: UITableViewController {
                 if isReal(word: lowerAnswer){
                     // Если слово прошло три проверки оно добавляется в массив usedWords
                     usedWords.insert(answer, at: 0)
-                    // после того как слово добавлено в массив usedWords указываем в какое место в массиве его добавить
+                    // после того как слово добавлено в массив usedWords указываем в какое место в таблице его добавить
                     let indexPath = IndexPath(row: 0, section: 0)
                     // Добавляем строку в таблицу
                     tableView.insertRows(at: [indexPath], with: .automatic)
