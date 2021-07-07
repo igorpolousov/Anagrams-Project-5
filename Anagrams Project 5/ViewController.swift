@@ -1,7 +1,7 @@
 //
 //  ViewController.swift
 //  Anagrams Project 5
-//   1
+//  Day 27 - 28 - 29
 //  Created by Igor Polousov on 01.07.2021.
 //
 
@@ -121,7 +121,7 @@ class ViewController: UITableViewController {
                 return false
             }
         }
-        // Возворащаем что все буквы в слове соотвествуют буквам в заголовке
+        // Возвращаем что все буквы в слове соотвествуют буквам в заголовке
         return true
     }
    // Функция которая делает проверку на повтор
@@ -192,8 +192,6 @@ class ViewController: UITableViewController {
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
         present(ac, animated: true)
     }
-    
-    
     
 }
 
