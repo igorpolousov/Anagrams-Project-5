@@ -34,6 +34,9 @@ class ViewController: UITableViewController {
         }
         // startGame() строка 37
         startGame()
+        // Load saved data
+        loadData()
+        
     }
     
    @objc func startGame() {
@@ -87,6 +90,8 @@ class ViewController: UITableViewController {
                 if isReal(word: lowerAnswer){
                     // Если слово прошло три проверки оно добавляется в массив usedWords
                     usedWords.insert(lowerAnswer, at: 0)
+                    // сохранили данные 
+                    save()
                     // после того как слово добавлено в массив usedWords указываем в какое место в таблице его добавить
                     let indexPath = IndexPath(row: 0, section: 0)
                     // Добавляем строку в таблицу
@@ -191,6 +196,23 @@ class ViewController: UITableViewController {
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
         present(ac, animated: true)
+    }
+    
+    
+    func save() {
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: usedWords, requiringSecureCoding: false) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "usedWords")
+        }
+    }
+    
+    func loadData() {
+        let defaults = UserDefaults.standard
+        if let savedUsedWords = defaults.object(forKey: "usedWords") as? Data {
+            if let decodedUsedWords = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedUsedWords) as? [String] {
+                usedWords = decodedUsedWords
+            }
+        }
     }
     
 }
