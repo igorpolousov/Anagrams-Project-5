@@ -62,7 +62,7 @@ class ViewController: UITableViewController {
         let submitAction = UIAlertAction(title: "Submit", style: .default) {
             // указываем weak чтобы не создавалась сильная ссылка при получении замыканием данных
             [weak self, weak ac] action in
-            // Проверка что массив textFields содержит буквы
+            // Проверка что массив textFields содержит символы
             guard let answer = ac?.textFields?[0].text else { return }
             // Выполнение функции submit строка 75
             self?.submit(answer)
