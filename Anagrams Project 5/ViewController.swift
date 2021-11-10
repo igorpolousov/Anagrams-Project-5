@@ -1,7 +1,7 @@
 //
 //  ViewController.swift
 //  Anagrams Project 5
-//  Day 27 - 28 - 29
+//  Day 49 Challenge
 //  Created by Igor Polousov on 01.07.2021.
 //
 
